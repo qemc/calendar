@@ -1,6 +1,7 @@
 from pro import login_manager
 from pro import db
 from flask_login import UserMixin
+from pro import bcrypt
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -18,6 +19,19 @@ class User(db.Model, UserMixin):
     email_address = db.Column(db.String(length=60), nullable = False, unique = True)
     password_hash = db.Column(db.String(length=100), nullable = False)
     events = db.relationship('Event', backref='creator', lazy=True)
+
+
+    @property
+    def password(self):
+        return self.password
+
+    @password.setter
+    def password(self,plain_text_password):
+        self.password_hash = bcrypt.generate_password_hash(plain_text_password).decode('utf-8')
+
+    def check_password_correction(self, atempted_password):
+        return bcrypt.check_password_hash(self.password_hash, atempted_password)
+
 
 
 class Event(db.Model):
