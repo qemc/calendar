@@ -1,5 +1,5 @@
-{% extends 'base.html' %} {% block title %} register page {% endblock %} {%
-block content %}
+{% extends 'base.html' %} {% block title %} login page {% endblock %} {% block
+content %}
 
 <div class="text-center mt-5 p-5 bg-dark">
   <img src="{{logo}}" class="img-fluid mb-3" width="700" height="200" alt="" />
@@ -11,17 +11,7 @@ block content %}
     </div>
 
     <div class="row justify-content-center m-2">
-      {{form.email_address(class="form-control col-7 ", placeholder="Email
-      Address")}}
-    </div>
-
-    <div class="row justify-content-center m-2">
-      {{form.password_1(class="form-control col-7 ", placeholder="Password")}}
-    </div>
-
-    <div class="row justify-content-center m-2">
-      {{form.password_2(class="form-control col-7 ", placeholder="Confirm
-      Password")}}
+      {{form.password(class="form-control col-7 ", placeholder="Password")}}
     </div>
 
     <div class="row justify-content-center m-2">

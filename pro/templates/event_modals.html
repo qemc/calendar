@@ -1,0 +1,64 @@
+<style>
+  .modal-content {
+    background-color: #212121;
+  }
+</style>
+<form method="POST" class="form-signin" style="color: white">
+  <div
+    class="modal fade"
+    id="Modal-Add"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="ModalLabel">Add new event</h2>
+          <button
+            type="button"
+            class="close"
+            style="color: white"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div>
+          {{ form.hidden_tag() }}
+          <div class="modal-body row">
+            <div class="d-flex flex-column col mx-3 mt-3">
+              <h3>Date</h3>
+              {{ form.date }}
+            </div>
+            <div class="d-flex flex-column col mx-3 mt-3">
+              <h3>Time</h3>
+              <!-- <input type="time" class=""> -->
+              {{ form.time }}
+            </div>
+          </div>
+          <div class="modal-body row">
+            <div class="d-flex flex-column col mx-3">
+              <h3>Description</h3>
+              {{ form.name }}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row justify-content-center m-2">
+            {{ form.submit(class="btn btn-block btn-primary") }}
+          </div>
+
+          <a
+            type="button"
+            class="btn btn-secondary"
+            href="{{ url_for('home_page') }}"
+          >
+            Close
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
