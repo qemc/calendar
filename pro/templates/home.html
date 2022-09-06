@@ -8,4 +8,38 @@
 
 
 
+
+<table class="table table-hover table-dark">
+    <thead>
+        <tr>
+            <th> Description: </th> 
+            <th> Date: </th>
+            <th> Time: </th>
+        </tr>
+
+
+
+    </thead>
+    <tbody>
+        {% for event in events %}
+            <tr>    
+                <td> {{event.event_name}}</td>
+                <td> {{event.event_date}}</td>
+                <td> {{event.event_time}}</td>
+                <td> 
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        <input id="to_delete" name="to_delete" type="hidden" value="{{event.id}}">
+                        {{delete_item.delete(class="btn btn-danger")}}
+                    </form>
+                </td>
+
+            </tr>
+        {% endfor %}
+    </tbody>
+
+
+</table>
+
+
 {% endblock %}

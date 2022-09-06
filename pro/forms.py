@@ -44,3 +44,8 @@ class EventForm(FlaskForm):
     name = TextAreaField(label='Description', validators=[
                          Length(min=2, max=300), DataRequired()])
     submit = SubmitField(label='Add')
+
+
+class DeleteEventForm(FlaskForm):
+    delete = SubmitField(label='Delete')
+    

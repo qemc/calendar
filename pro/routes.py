@@ -1,10 +1,12 @@
+
 from pro import app
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from pro.models import User, Event
-from pro.forms import RegisterForm, LoginForm, EventForm
+from pro.forms import RegisterForm, LoginForm, EventForm, DeleteEventForm
 from pro import db
 from flask_login import login_user, logout_user, current_user
 import os
+from sqlalchemy import delete
 
 
 IMG_FOLDER = os.path.join('static', 'pics')
@@ -15,16 +17,37 @@ app.config['UPLOAD_FOLDER'] = IMG_FOLDER
 def home_page():
 
     form = EventForm()
+    delete_item = DeleteEventForm()
 
     if form.validate_on_submit():
         new_event = Event(event_name=form.name.data,
                           event_date=form.date.data,
-                          event_time=form.time.data)
+                          event_time=form.time.data,
+                          event_creator_id=current_user._get_current_object().id)
         db.session.add(new_event)
         db.session.commit()
         flash(f'Event Added', category='success')
         return redirect(url_for('home_page'))
-    return render_template('home.html', form=form)
+    
+    
+    
+    if current_user.is_authenticated:
+        events = Event.query.filter_by(event_creator_id=current_user.id) 
+           
+        if delete_item.validate_on_submit():
+            to_delete = request.form.get('to_delete')
+            deleted = Event.query.filter_by(event_id = to_delete).first()
+            
+            #here is error and it needs to be u know----------------
+            db.session.delete(deleted)
+            db.session.commit()
+            #just taking a note to ---------------------------------
+        
+        return render_template('home.html', form=form, events=events, delete_item = delete_item)
+    else:
+        return render_template('home.html', form=form)
+    
+    
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -82,3 +105,5 @@ def logout_page():
     logout_user()
     flash(f'You have been logged out', category='info')
     return redirect(url_for('home_page'))
+
+    

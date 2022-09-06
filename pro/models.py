@@ -19,7 +19,7 @@ class User(db.Model, UserMixin):
     email_address = db.Column(db.String(length=60),
                               nullable=False, unique=True)
     password_hash = db.Column(db.String(length=100), nullable=False)
-    #events = db.relationship('Event', backref='creator', lazy=True)
+    events = db.relationship('Event', backref=' creator', lazy=True)
 
     @property
     def password(self):
@@ -39,7 +39,7 @@ class Event(db.Model):
     event_name = db.Column(db.String(length=200), nullable=False)
     event_date = db.Column(db.Date(), nullable=False)
     event_time = db.Column(db.Time(), nullable=False)
-    #creator_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    event_creator_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
     def __repr__(self):
         return f'Item {self.name}'
