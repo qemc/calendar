@@ -49,3 +49,16 @@ class EventForm(FlaskForm):
 class DeleteEventForm(FlaskForm):
     delete = SubmitField(label='Delete')
     
+class EditEventForm(FlaskForm):
+
+    date = DateField(label='Date', validators=[DataRequired()])
+    time = TimeField(label='Time', validators=[DataRequired()])
+    name = TextAreaField(label='Description', validators=[
+                            Length(min=2, max=300), DataRequired()])
+    edit = SubmitField(label='Save')
+    
+class EditForm(FlaskForm):
+    submit = SubmitField(label='Edit')
+
+
+    

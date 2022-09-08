@@ -8,10 +8,6 @@ from pro import bcrypt
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
-# Klasa, w sumie bardzo podobna rzecz do klasy w cpp, zdecydowanie łatwiej z niej korzystać
-# niż bez niej xD
-
 class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer(), primary_key=True)
@@ -43,3 +39,5 @@ class Event(db.Model):
 
     def __repr__(self):
         return f'Item {self.name}'
+    
+

@@ -4,9 +4,6 @@
 {% endblock %}
 {% block content %}
 {% include 'event_modals.html' %}
-<p>home page</p>
-
-
 
 
 <table class="table table-hover table-dark">
@@ -16,30 +13,32 @@
             <th> Date: </th>
             <th> Time: </th>
         </tr>
-
-
-
     </thead>
     <tbody>
         {% for event in events %}
+        {% include 'edit_modal.html' %}
             <tr>    
                 <td> {{event.event_name}}</td>
                 <td> {{event.event_date}}</td>
                 <td> {{event.event_time}}</td>
+                
+                <form method="POST">
                 <td> 
-                    <form method="POST">
                         {{ form.hidden_tag() }}
-                        <input id="to_delete" name="to_delete" type="hidden" value="{{event.id}}">
+                        <input id="to_delete" name="to_delete" type="hidden" value="{{event.event_id}}">
                         {{delete_item.delete(class="btn btn-danger")}}
-                    </form>
                 </td>
-
+                </form>
+                <td> 
+                    <button class="btn btn-outline btn-info" data-toggle="modal" data-target="#Modal-Edit-{{ event.event_id }}">Edit</button>
+                </td>
             </tr>
         {% endfor %}
     </tbody>
-
-
 </table>
 
 
+
+
 {% endblock %}
+

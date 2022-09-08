@@ -1,8 +1,9 @@
 
+from operator import methodcaller
 from pro import app
 from flask import render_template, redirect, url_for, flash, request
 from pro.models import User, Event
-from pro.forms import RegisterForm, LoginForm, EventForm, DeleteEventForm
+from pro.forms import RegisterForm, LoginForm, EventForm, DeleteEventForm, EditEventForm, EditForm
 from pro import db
 from flask_login import login_user, logout_user, current_user
 import os
@@ -18,6 +19,15 @@ def home_page():
 
     form = EventForm()
     delete_item = DeleteEventForm()
+    edit_event_form = EditEventForm()
+    edit_form = EditForm()
+    
+    if request.method =='POST':
+        
+        #here we are geting info about id number of event we want to edit
+         to_edit = request.form.get('to_edit')
+         print(to_edit)
+         
 
     if form.validate_on_submit():
         new_event = Event(event_name=form.name.data,
@@ -28,27 +38,24 @@ def home_page():
         db.session.commit()
         flash(f'Event Added', category='success')
         return redirect(url_for('home_page'))
-    
-    
-    
+ 
+        
     if current_user.is_authenticated:
-        events = Event.query.filter_by(event_creator_id=current_user.id) 
-           
+        events = Event.query.filter_by(event_creator_id=current_user.id)
+        
+         # order by, do wyświetlania posortowanych wartości 
+        
         if delete_item.validate_on_submit():
             to_delete = request.form.get('to_delete')
-            deleted = Event.query.filter_by(event_id = to_delete).first()
-            
-            #here is error and it needs to be u know----------------
-            db.session.delete(deleted)
+            Event.query.filter_by(event_id = to_delete).delete()
             db.session.commit()
-            #just taking a note to ---------------------------------
-        
-        return render_template('home.html', form=form, events=events, delete_item = delete_item)
+            
+        return render_template('home.html', form=form, events=events, delete_item = delete_item, edit_event_form = edit_event_form, edit_form = edit_form)
     else:
-        return render_template('home.html', form=form)
-    
-    
+        return render_template('home.html', form=form,delete_item = delete_item, edit_event_form = edit_event_form, edit_form = edit_form)
 
+
+    
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_page():
@@ -107,3 +114,4 @@ def logout_page():
     return redirect(url_for('home_page'))
 
     
+
