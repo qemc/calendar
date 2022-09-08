@@ -5,7 +5,7 @@
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
-    <form method="POST" class="form-signin" style="color: white"></form>
+    <form method="POST" class="form-signin" style="color: white">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -42,7 +42,7 @@
           </div>
           <div class="modal-footer">
             <div class="row justify-content-center m-2">
-              <input id="to_edit" name="to_edit" type="hidden" value="{{ form.event_id }}">
+              <input id="to_edit" name="to_edit" type="hidden" value="{{ event.event_id }}">
               {{ edit_event_form.edit(class="btn btn-block btn-info") }}
             </div>
 
