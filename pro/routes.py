@@ -5,7 +5,7 @@ from pro.forms import RegisterForm, LoginForm, EventForm, DeleteEventForm, EditE
 from pro import db
 from flask_login import login_user, logout_user, current_user
 import os
-from sqlalchemy import delete, update
+
 
 
 IMG_FOLDER = os.path.join('static', 'pics')
@@ -20,32 +20,7 @@ def home_page():
     edit_event_form = EditEventForm()
     edit_form = EditForm()
         
-         
-    if edit_event_form.validate_on_submit():
-        
-        to_edit = request.form.get('to_edit')    
-        
-        flash(to_edit, category='success')
-        # update(Event).where(Event.event_id == to_edit).values(
-        #                                 date = edit_event_form.date,
-        #                                 name = edit_event_form.name,
-        #                                 time = edit_event_form.time)
-        
-        update_event = Event.query.filter_by(event_id = to_edit).first()
-        print(update_event.event_name)
-        update_event.event_name = edit_event_form.name.data
-        update_event.event_time = edit_event_form.time.data
-        update_event.event_date = edit_event_form.date.data
-        
-        print(update_event.event_name)
-        
-        db.session.commit()
-        
-        return redirect(url_for('home_page'))
-        
-        
-
-    if form.validate_on_submit():
+    if form.validate_on_submit() and form.submit.data:
         new_event = Event(event_name=form.name.data,
                           event_date=form.date.data,
                           event_time=form.time.data,
@@ -55,12 +30,23 @@ def home_page():
         flash(f'Event Added', category='success')
         return redirect(url_for('home_page'))
  
+    if edit_event_form.validate_on_submit() and edit_event_form.edit.data:
+        
+        to_edit = request.form.get('to_edit')    
+        
+        flash(to_edit, category='success')
+        
+        update_event = Event.query.filter_by(event_id = to_edit).first()
+        update_event.event_name = edit_event_form.name.data
+        update_event.event_time = edit_event_form.time.data
+        update_event.event_date = edit_event_form.date.data
+        db.session.commit()
+        
+        return redirect(url_for('home_page'))
         
     if current_user.is_authenticated:
         
         events = Event.query.filter(Event.event_creator_id==current_user.id).order_by(Event.event_date.asc())
-        
-         # order by, do wyświetlania posortowanych wartości 
         events.order_by(Event.event_date.asc())
         
         if delete_item.validate_on_submit():
